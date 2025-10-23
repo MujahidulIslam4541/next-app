@@ -1,4 +1,3 @@
-import React from "react";
 
 const blogPage = ({ params }) => {
   const { id } = params;
