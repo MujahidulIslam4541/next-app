@@ -1,6 +1,9 @@
- export  const getAllPosts=async()=>{
+export const getAllPosts = async () => {
+  const result = fetch("https://jsonplaceholder.typicode.com/posts?_limit=20", {
+    next: {
+      revalidate: 10,
+    },
+  });
 
-  const result=fetch('https://jsonplaceholder.typicode.com/posts?_limit=20')
-
-  return (await result).json()
-}
+  return (await result).json();
+};

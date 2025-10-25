@@ -1,3 +1,4 @@
+import { getAllPosts } from "@/api/getAllPosts";
 import { getPost } from "@/api/getPost";
 import { getPostComments } from "@/api/getPostComments";
 import Comments from "@/app/components/Coments";
@@ -14,22 +15,27 @@ export const generateMetadata = async ({ params }) => {
   };
 };
 
-const postDetails = async ({ params }) => {
+export default async function postDetails({params}) {
   const { id } = await params;
-  const postPromise = getPost(id);
+  const post = await getPost(id);
   const comments = getPostComments(id);
 
-  const post = await postPromise;
   return (
     <div>
       <h2>{post.title}</h2>
       <hr></hr>
 
       <Suspense fallback="<h2>Loading comments</h2>">
-        <Comments  promise={comments}></Comments>
+        <Comments promise={comments}></Comments>
       </Suspense>
     </div>
   );
-};
+}
 
-export default postDetails;
+export const generateStaticParams = async () => {
+  const posts = await getAllPosts();
+
+  return posts.map((post) => ({
+    id: post.id.toString(),
+  }));
+};
